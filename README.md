@@ -1,4 +1,4 @@
-doubleTap.js / xorTap.js
+doubleTap.js & xorTap.js
 ========================
 
 doubleTap.js
@@ -52,7 +52,7 @@ Just pass in handlers for each of the different levels (can handle triple clicks
 Example
 -------
 
-The [example.html](example.html) shows how these different pieces can work together to unify the
+The [example.html](https://github.com/mckamey/doubleTap.js/blob/master/example.html) shows how these different pieces can work together to unify the
 experience for touch / mouse environments.
 
 Note for iOS devices
@@ -66,6 +66,6 @@ To disable zooming, a meta tag must be put in the head of the HTML document:
 MIT License
 -----------
 
-These scripts are distributed under [The MIT License](LICENSE.txt) and are free to use.
+These scripts are free to use and are distributed under [The MIT License](https://github.com/mckamey/doubleTap.js/blob/master/LICENSE.txt).
 
 Copyright (c)2012 Stephen M. McKamey.
