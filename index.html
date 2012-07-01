@@ -23,7 +23,7 @@ These are implemented here as 'tap' and 'dbltap'.</p>
 
 <p>The first example fires no new tap events, but it monitors native click events.
 With this example, you can see the brokenness of clicks on touch.</p>
-<div id="none">no tap events but native clicks</div>
+<div id="none">native click and dblclick</div>
 
 <p>The second example fires both tap and dbltap:</p>
 <div id="both">both tap and dbltap</div>
@@ -70,25 +70,27 @@ Single clicks are therefore delayed until a double click is impossible:</p>
 	}
 
 	// generic handler for either event
-	function onevent(e) {
+	function printEvt(e) {
 		log(this.id+', '+e.type+': '+e.detail);
 		toggleClass(this, 'on'+e.type);
 		clearSelection();
 	}
 
+	var HAS_TOUCH = ('ontouchstart' in window);
+
 	// ----------------------------------------------------
 	// Do not enable touch clicks, but monitor both.
 	// NOTE: native clicks will fire but touch will not.
 	var none = document.getElementById('none');
-	none.addEventListener('click', onevent, false);
-	none.addEventListener('dblclick', onevent, false);
+	none.addEventListener('click', printEvt, false);
+	none.addEventListener('dblclick', printEvt, false);
 
 	// ----------------------------------------------------
 	// Enable click & dblclick events, and monitor both.
 	var both = document.getElementById('both');
-	doubleTap(both);
-	both.addEventListener('tap', onevent, false);
-	both.addEventListener('dbltap', onevent, false);
+	both.addEventListener(HAS_TOUCH ? 'touchend' : 'mouseup', doubleTap(), false);
+	both.addEventListener('tap', printEvt, false);
+	both.addEventListener('dbltap', printEvt, false);
 
 	// ----------------------------------------------------
 	// Enable either click or dblclick action, but not both.
@@ -98,7 +100,7 @@ Single clicks are therefore delayed until a double click is impossible:</p>
 	// http://stackoverflow.com/a/11057483/43217
 	var xor = document.getElementById('xor'),
 		MULTI_CLICK_DELAY = 250;
-	doubleTap(xor, MULTI_CLICK_DELAY);
+	xor.addEventListener(HAS_TOUCH ? 'touchend' : 'mouseup', doubleTap(MULTI_CLICK_DELAY), false);
 
 	var xorClick = 	xorTap(
 		function(e) {

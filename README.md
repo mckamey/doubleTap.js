@@ -7,16 +7,16 @@ doubleTap.js
 This utility emulates standard `click` and `dblclick` behavior for touch devices
 on typically non-clickable elements (e.g., an ordinary `<div>` element).
 
-Unfortunately, touch browsers fire a broken 'click' event which does not update
+Unfortunately, touch browsers fire a broken `click` event which does not update
 the number of clicks making double click events much more difficult handle.
 As such, two new events are needed which gets consistently fired in both environments.
 These are implemented here as `tap` and `dbltap`.
 
-These events are enabled for both mouse and touch devices by calling the doubleTap method:
+These events are enabled for both mouse and touch devices by attaching a doubleTap handler:
 
 	// Enable tap & dbltap events
 	var myElem = document.getElementById('foo');
-	doubleTap(myElem);
+	myElem.addEventListener(('ontouchend' in myElem) ? 'touchend' : 'mouseup', doubleTap(speed, distance), false);
 	myElem.addEventListener('tap', ontapHandler, false);
 	myElem.addEventListener('dbltap', ondbltapHandler, false);
 
@@ -29,10 +29,10 @@ The xorTap.js script adds a helper for creating a combined event handler that fi
 events mutually exclusively. It can be attached to the standard `click` event or the `tap`
 event that is created by `doubleTap.js`.
 
-Just pass in handlers for each of the different levels (can handle triple clicks and higher):
+Just pass in handlers for each of the different levels (can even handle triple clicks and higher):
 
 	// Create a combo event handler
-	var handler = xorTap(
+	var xorhandler = xorTap(
 		function(e) {
 			alert('click!');
 		},
@@ -42,17 +42,17 @@ Just pass in handlers for each of the different levels (can handle triple clicks
 
 	// Attach as click event
 	var myElem = document.getElementById('foo');
-	myElem.addEventListener('click', handler, false);
+	myElem.addEventListener('click', xorhandler, false);
 
-	// Attach as tap event
+	// Or combine with doubleTap to attach as tap event
 	var myElem = document.getElementById('bar');
-	doubleTap(myElem);
-	myElem.addEventListener('tap', handler, false);
+	myElem.addEventListener(('ontouchend' in myElem) ? 'touchend' : 'mouseup', doubleTap(speed, distance), false);
+	myElem.addEventListener('tap', xorhandler, false);
 
 Example
 -------
 
-The [example.html](https://github.com/mckamey/doubleTap.js/blob/master/example.html) shows how these different pieces can work together to unify the
+The [example](https://github.com/mckamey/doubleTap.js/blob/master/index.html) shows how these different pieces can work together to unify the
 experience for touch / mouse environments.
 
 Note for iOS devices
